@@ -29,6 +29,7 @@ admin.initializeApp({
 client.connect(err => {
   const bookings = client.db("bookingApp").collection("booking");
   const productsCollection = client.db("ema-john-store").collection("products");
+  const ordersCollection = client.db("ema-john-store").collection("order");
   // perform actions on the collection object
   app.post('/addBooking',(req,res) =>{
      const newBooking = req.body;  
@@ -94,11 +95,16 @@ client.connect(err => {
         // Handle error
       });
     }
-   
-
       // console.log(req.headers.authorization);
-     
   })
+
+  app.post('/addOrder',(req,res) =>{
+    const order = req.body;  
+    ordersCollection.insertOne(order)
+    .then(result => {
+       res.send(result.acknowledged);
+   })
+ })
 
 
 });
